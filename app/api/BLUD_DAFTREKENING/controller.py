@@ -69,7 +69,7 @@ class List(Resource):
             # parser.add_argument('MTGLEVEL', default=1)
             # parser.remove_argument("parent_id")
             del args['parent_id']
-        else :
+        else:
             del args['MTGLEVEL']
         return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, None, None, args )
 

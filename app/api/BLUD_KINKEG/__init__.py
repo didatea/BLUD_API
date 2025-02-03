@@ -19,10 +19,10 @@ respAndPayloadFields = {
     "DATEUPDATE": fields.DateTime(required=False, example="2024-06-09 20:11", ),
 
 }
-uniqueField = ["KDPER"]
+uniqueField = []
 searchField = ["KDPER", "NMPER"]
-sortField = ["KDPER"]
-filterField = ["parent_id", "MTGLEVEL", "TYPE" ]
+sortField = []
+filterField = ["parent_id", "MTGLEVEL", "TYPE", "kinkeg"]
 enabledPagination = False
 fileFields = []
 

@@ -13,6 +13,8 @@ respAndPayloadFields = {
     "IDKEG": fields.Integer(required=True, example=1, ),
     "KDTAHAP": fields.String(required=True, max_length=5, example="", ),
     "IDPRGRM": fields.Integer(required=True, example=1, ),
+    "NUKEG": fields.String(required=True, max_length=5, example="", ),
+    "NMKEGUNIT": fields.String(required=True, max_length=5, example="", ),
     "NOPRIOR": NullableInteger(required=False, example=1, ),
     "IDSIFATKEG": fields.Integer(required=True, example=1, ),
     "IDPEG": NullableInteger(required=False, example=1, ),
@@ -40,10 +42,10 @@ respAndPayloadFields = {
     "DATEUPDATE": fields.DateTime(required=False, example="2024-06-09 10:29", ),
 
 }
-uniqueField = ["KDPER"]
+uniqueField = [""]
 searchField = ["KDPER", "NMPER"]
 sortField = ["KDPER"]
-filterField = ["parent_id", "MTGLEVEL", "TYPE" ]
+filterField = ["parent_id", "MTGLEVEL", "TYPE", "IDUNIT", "IDPRGRM", "kegUnit"]
 enabledPagination = False
 fileFields = []
 

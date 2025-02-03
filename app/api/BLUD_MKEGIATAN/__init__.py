@@ -20,7 +20,7 @@ respAndPayloadFields = {
     "DATECREATE": fields.DateTime(required=False, example="2024-02-28 20:07", ),
     "DATEUPDATE": fields.DateTime(required=False, example="2024-02-28 20:07", ),
     "has_child": fields.Boolean(readonly=True),
-    "LOOKUP": fields.String(required=True, max_length=5, example="", ),
+    "LOOKUP": fields.String(required=False, max_length=5, example="", ),
 }
 uniqueField = []
 searchField = ["NMKEGUNIT"]
