@@ -26,9 +26,13 @@ class RKAR(db.Model):
     def UNIT(self):
         return self.DAFTUNIT.NMUNIT if self.DAFTUNIT else ""
 
+    # @property
+    # def KEGIATAN(self):
+    #     return self.MKEGIATAN.NMKEGUNIT if self.MKEGIATAN else ""
+
     @property
-    def KEGIATAN(self):
-        return self.MKEGIATAN.NMKEGUNIT if self.MKEGIATAN else ""
+    def KDREKENING(self):
+        return self.DAFTREKENING.KDPER if self.DAFTREKENING else ""
 
     @property
     def REKENING(self):

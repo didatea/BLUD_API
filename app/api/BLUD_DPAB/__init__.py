@@ -8,21 +8,20 @@ apiPath = 'BLUD_DPAB'
 modelName = 'DPAB'
 respAndPayloadFields = {
     "id": fields.Integer(readonly=True, example=1, ),
-    "IDUNIT": fields.Integer(required=True, example=1, ),
+    "IDDPA": fields.Integer(required=True, example=1, ),
     "IDREK": fields.Integer(required=True, example=1, ),
     "KDTAHAP": fields.String(required=True, max_length=5, example="", ),
     "NILAI": fields.Fixed(required=False, ),
     "DATECREATE": fields.DateTime(required=False, example="2024-03-26 10:19", ),
     "DATEUPDATE": fields.DateTime(required=False, example="2024-03-26 10:19", ),
-    "UNIT": NullableString(readonly=True, example="", ),
     "REKENING": NullableString(readonly=True, example="", ),
     "TAHAPAN": NullableString(readonly=True, example="", ),
 
 }
 uniqueField = []
 searchField = []
-sortField = []
-filterField = []
+sortField = ["IDREK"]
+filterField = ["IDDPA", "biaya"]
 enabledPagination = False
 fileFields = []
 

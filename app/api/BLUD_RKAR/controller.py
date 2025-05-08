@@ -17,6 +17,7 @@ from app.utils import GeneralGetList, \
 from . import crudTitle, enabledPagination, respAndPayloadFields, fileFields, modelName, filterField
 from .doc import doc
 from .service import Service
+from ..BLUD_USERTAHAP.model import USERTAHAP
 from ... import internalApi_byUrl, db
 from ...sso_helper import token_required, current_user
 
@@ -54,10 +55,13 @@ class List(Resource):
 
     #### POST SINGLE/MULTIPLE
     @doc.postRespDoc
-    @api.expect(doc.default_data_response, validate=True)
+    @api.expect(doc.default_data_response, validate=False)
     @token_required
     def post(self):
-
+        request_post = request.get_json()
+        user = current_user['username']
+        KDTAHAP = USERTAHAP.query.with_entities(USERTAHAP.KDTAHAP).filter_by(USERID=user).first()
+        request_post['KDTAHAP'] = KDTAHAP[0]
         return GeneralPost(doc, crudTitle, Service, request)
 
     #### MULTIPLE-DELETE

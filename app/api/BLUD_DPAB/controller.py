@@ -3,6 +3,8 @@ import json
 import math
 from cgitb import text
 from datetime import datetime
+from decimal import Decimal
+from sqlalchemy import text
 
 import sqlalchemy
 from flask import request, current_app, jsonify
@@ -50,7 +52,82 @@ class List(Resource):
     @api.expect(parser)
     @token_required
     def get(self):
-        return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
+        args = parser.parse_args()
+        if args["biaya"] == "penerimaan":
+            id_dpa = args.get("IDDPA")  # Ambil parameter IDUNIT dari request
+            sqlQuery = text("""
+                                    SELECT r.id, r.IDUNIT, r.IDDPA, r.IDREK, d2.KDPER, d2.NMPER, r.KDTAHAP, r.NILAI, r.DATECREATE, r.DATEUPDATE
+                                    FROM DPAB r
+                                    JOIN DAFTREKENING AS d2 ON d2.id = r.IDREK
+                                    WHERE d2.KDPER LIKE '6.1.%' AND r.IDDPA = :id_dpa
+                                    ORDER BY d2.KDPER ASC;  
+                                """)
+
+            try:
+                # Execute the query with parameters
+                data = db.engine.execute(sqlQuery, {"id_dpa": id_dpa})
+                a = []
+
+                # Process the rows from the query
+                for rowproxy in data:
+                    row_dict = {}
+                    for column, value in rowproxy.items():
+                        # Handle datetime and Decimal types
+                        if isinstance(value, datetime):
+                            row_dict[column] = value.isoformat()
+                        elif isinstance(value, Decimal):
+                            row_dict[column] = float(value)  # Convert Decimal to float
+                        else:
+                            row_dict[column] = value
+                    a.append(row_dict)
+
+                # Create a response
+                resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+                resp['data'] = a
+                return resp, 200
+
+            except Exception as e:
+                # Handle exceptions and return error message
+                return {"status": False, "message": str(e)}, 500
+
+        if args["biaya"] == "pengeluaran":
+            id_dpa = args.get("IDDPA")
+            sqlQuery = text("""
+                        SELECT r.id, r.IDUNIT, r.IDDPA, r.IDREK, d2.KDPER, d2.NMPER, r.KDTAHAP, r.NILAI, r.DATECREATE, r.DATEUPDATE
+                        FROM DPAB r
+                        JOIN DAFTREKENING AS d2 ON d2.id = r.IDREK
+                        WHERE d2.KDPER LIKE '6.2.%' AND r.IDDPA = :id_dpa
+                        ORDER BY d2.KDPER ASC;  
+                                """)
+
+            try:
+                # Execute the query with parameters
+                data = db.engine.execute(sqlQuery, {"id_dpa": id_dpa})
+                a = []
+
+                # Process the rows from the query
+                for rowproxy in data:
+                    row_dict = {}
+                    for column, value in rowproxy.items():
+                        # Handle datetime and Decimal types
+                        if isinstance(value, datetime):
+                            row_dict[column] = value.isoformat()
+                        elif isinstance(value, Decimal):
+                            row_dict[column] = float(value)  # Convert Decimal to float
+                        else:
+                            row_dict[column] = value
+                    a.append(row_dict)
+
+                # Create a response
+                resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+                resp['data'] = a
+                return resp, 200
+
+            except Exception as e:
+                # Handle exceptions and return error message
+                return {"status": False, "message": str(e)}, 500
+        else:
+            return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
 
     #### POST SINGLE/MULTIPLE
     @doc.postRespDoc

@@ -22,6 +22,7 @@ class DAFTBANK(db.Model):
     CABANG = db.Column(db.String(512), nullable=True)
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
+    BKBKAS = db.relationship('BKBKAS', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT
 @event.listens_for(db.session, "do_orm_execute")

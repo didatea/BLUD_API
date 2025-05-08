@@ -3,6 +3,8 @@ import json
 import math
 from cgitb import text
 from datetime import datetime
+from decimal import Decimal
+from sqlalchemy import text
 
 import sqlalchemy
 from flask import request, current_app, jsonify
@@ -17,6 +19,7 @@ from app.utils import GeneralGetList, \
 from . import crudTitle, enabledPagination, respAndPayloadFields, fileFields, modelName, filterField
 from .doc import doc
 from .service import Service
+from ..BLUD_USERTAHAP.model import USERTAHAP
 from ... import internalApi_byUrl, db
 from ...sso_helper import token_required, current_user
 
@@ -50,14 +53,92 @@ class List(Resource):
     @api.expect(parser)
     @token_required
     def get(self):
-        return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
+        args = parser.parse_args()
+        if args["biaya"] == "penerimaan":
+            id_unit = args.get("IDUNIT")  # Ambil parameter IDUNIT dari request
+            sqlQuery = text("""
+                            SELECT r.id, r.IDUNIT, r.IDREK, d2.KDPER, d2.NMPER, r.KDTAHAP, r.NILAI, r.DATECREATE, r.DATEUPDATE
+                            FROM RKAB r
+                            JOIN DAFTREKENING AS d2 ON d2.id = r.IDREK
+                            WHERE d2.KDPER LIKE '6.1.%' AND r.IDUNIT = :id_unit
+                            ORDER BY d2.KDPER ASC;  
+                        """)
+
+            try:
+                # Execute the query with parameters
+                data = db.engine.execute(sqlQuery, {"id_unit": id_unit})
+                a = []
+
+                # Process the rows from the query
+                for rowproxy in data:
+                    row_dict = {}
+                    for column, value in rowproxy.items():
+                        # Handle datetime and Decimal types
+                        if isinstance(value, datetime):
+                            row_dict[column] = value.isoformat()
+                        elif isinstance(value, Decimal):
+                            row_dict[column] = float(value)  # Convert Decimal to float
+                        else:
+                            row_dict[column] = value
+                    a.append(row_dict)
+
+                # Create a response
+                resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+                resp['data'] = a
+                return resp, 200
+
+            except Exception as e:
+                # Handle exceptions and return error message
+                return {"status": False, "message": str(e)}, 500
+
+        if args["biaya"] == "pengeluaran":
+            id_unit = args.get("IDUNIT")  # Ambil parameter IDUNIT dari request
+            sqlQuery = text("""
+                            SELECT r.id, r.IDUNIT, r.IDREK, d2.KDPER, d2.NMPER, r.KDTAHAP, r.NILAI, r.DATECREATE, r.DATEUPDATE
+                            FROM RKAB r
+                            JOIN DAFTREKENING AS d2 ON d2.id = r.IDREK
+                            WHERE d2.KDPER LIKE '6.2.%' AND r.IDUNIT = :id_unit
+                            ORDER BY d2.KDPER ASC;  
+                        """)
+
+            try:
+                # Execute the query with parameters
+                data = db.engine.execute(sqlQuery, {"id_unit": id_unit})
+                a = []
+
+                # Process the rows from the query
+                for rowproxy in data:
+                    row_dict = {}
+                    for column, value in rowproxy.items():
+                        # Handle datetime and Decimal types
+                        if isinstance(value, datetime):
+                            row_dict[column] = value.isoformat()
+                        elif isinstance(value, Decimal):
+                            row_dict[column] = float(value)  # Convert Decimal to float
+                        else:
+                            row_dict[column] = value
+                    a.append(row_dict)
+
+                # Create a response
+                resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+                resp['data'] = a
+                return resp, 200
+
+            except Exception as e:
+                # Handle exceptions and return error message
+                return {"status": False, "message": str(e)}, 500
+        else:
+            return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
 
     #### POST SINGLE/MULTIPLE
     @doc.postRespDoc
-    @api.expect(doc.default_data_response, validate=True)
+    @api.expect(doc.default_data_response, validate=False)
     @token_required
     def post(self):
-
+        request_post = request.get_json()
+        user = current_user['username']
+        KDTAHAP = USERTAHAP.query.with_entities(USERTAHAP.KDTAHAP).filter_by(USERID=user).first()
+        request_post['KDTAHAP'] = KDTAHAP[0]
         return GeneralPost(doc, crudTitle, Service, request)
 
     #### MULTIPLE-DELETE

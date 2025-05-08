@@ -45,25 +45,82 @@ class List(Resource):
     @token_required
     def get(self):
         args = parser.parse_args()
-        # if args["level"] == "1":
-        #     sqlQuery = text(f'''
-        # SELECT*FROM DAFTREKENING AS d WHERE d.MTGLEVEL='2' ORDER BY d.KDPER''')
-        #     data = db.engine.execute(sqlQuery)
-        #     d, a = {}, []
-        #     for rowproxy in data:
-        #         for column, value in rowproxy.items():
-        #             if isinstance(value, datetime):
-        #                 d = {**d, **{column: value.isoformat()}}
-        #             else:
-        #                 d = {**d, **{column: value}}
-        #         a.append(d)
-        #     # print(a)
-        #     resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
-        #     resp['data'] = a
-        #     return resp, 200
-        # else:
-        # if args.get("MTGLEVEL") and args.get("parent_id"):
-        #     parser.remove_argument("MTGLEVEL")
+        if args["rekening"] == "pendapatan":
+            sqlQuery = text(f'''
+                SELECT        id, KDPER, NMPER, MTGLEVEL, KDKHUSUS, JNSREK, IDJNSAKUN, TYPE, STAKTIF, parent_id, DATECREATE
+                FROM            DAFTREKENING
+                WHERE        (IDJNSAKUN = 4)''')
+            data = db.engine.execute(sqlQuery)
+            d, a = {}, []
+            for rowproxy in data:
+                for column, value in rowproxy.items():
+                    if isinstance(value, datetime):
+                        d = {**d, **{column: value.isoformat()}}
+                    else:
+                        d = {**d, **{column: value}}
+                a.append(d)
+            # print(a)
+            resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+            resp['data'] = a
+            return resp, 200
+
+        if args["rekening"] == "belanja":
+            sqlQuery = text(f'''
+                SELECT        id, KDPER, NMPER, MTGLEVEL, KDKHUSUS, JNSREK, IDJNSAKUN, TYPE, STAKTIF, parent_id, DATECREATE
+                FROM            DAFTREKENING
+                WHERE        (IDJNSAKUN = 5)''')
+            data = db.engine.execute(sqlQuery)
+            d, a = {}, []
+            for rowproxy in data:
+                for column, value in rowproxy.items():
+                    if isinstance(value, datetime):
+                        d = {**d, **{column: value.isoformat()}}
+                    else:
+                        d = {**d, **{column: value}}
+                a.append(d)
+            # print(a)
+            resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+            resp['data'] = a
+            return resp, 200
+
+        if args["rekening"] == "penerimaanBiaya":
+            sqlQuery = text(f'''
+                SELECT        id, KDPER, NMPER, MTGLEVEL, KDKHUSUS, JNSREK, IDJNSAKUN, TYPE, STAKTIF, parent_id, DATECREATE
+                FROM            DAFTREKENING
+                WHERE        IDJNSAKUN = 6 AND KDPER LIKE '6.1.%' ORDER BY KDPER ASC;''')
+            data = db.engine.execute(sqlQuery)
+            d, a = {}, []
+            for rowproxy in data:
+                for column, value in rowproxy.items():
+                    if isinstance(value, datetime):
+                        d = {**d, **{column: value.isoformat()}}
+                    else:
+                        d = {**d, **{column: value}}
+                a.append(d)
+            # print(a)
+            resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+            resp['data'] = a
+            return resp, 200
+
+        if args["rekening"] == "pengeluaranBiaya":
+            sqlQuery = text(f'''
+                SELECT        id, KDPER, NMPER, MTGLEVEL, KDKHUSUS, JNSREK, IDJNSAKUN, TYPE, STAKTIF, parent_id, DATECREATE
+                FROM            DAFTREKENING
+                WHERE        IDJNSAKUN = 6 AND KDPER LIKE '6.2.%' ORDER BY KDPER ASC;''')
+            data = db.engine.execute(sqlQuery)
+            d, a = {}, []
+            for rowproxy in data:
+                for column, value in rowproxy.items():
+                    if isinstance(value, datetime):
+                        d = {**d, **{column: value.isoformat()}}
+                    else:
+                        d = {**d, **{column: value}}
+                a.append(d)
+            # print(a)
+            resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+            resp['data'] = a
+            return resp, 200
+
         if args.get("parent_id") == 'null':
             args["MTGLEVEL"] = 1
             # parser.add_argument('MTGLEVEL', default=1)

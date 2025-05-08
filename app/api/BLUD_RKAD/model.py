@@ -27,6 +27,9 @@ class RKAD(db.Model):
         return self.DAFTUNIT.NMUNIT if self.DAFTUNIT else ""
 
     @property
+    def KDREKENING(self):
+        return self.DAFTREKENING.KDPER if self.DAFTREKENING else ""
+    @property
     def REKENING(self):
         return self.DAFTREKENING.NMPER if self.DAFTREKENING else ""
 

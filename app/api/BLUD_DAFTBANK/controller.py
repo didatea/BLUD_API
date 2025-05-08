@@ -1,7 +1,6 @@
 import json
 import math
 
-from args import args
 from cloudinary import search
 from flask import request, current_app
 from flask_restx import Resource, reqparse, inputs
@@ -44,56 +43,7 @@ class List(Resource):
     @token_required
     def get(self):
         return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
-        # args = parser.parse_args()
-        # resultFinal = []
-        # defaultPageResp = {
-        #     "message": f'Get data {modelName} successfully',
-        #     "status": True,
-        #     "page": args['page'] or 1,
-        #     "pages": args['page'] or 1,
-        #     "per_page": args['length'] or 10,
-        #     "total": 0,
-        #     "data": resultFinal
-        # }
-        # try:
-        #     page = f"{args['page'] if args.get('page') else 1}"
-        #     length = f"{args['length'] if args.get('length') else 10}"
-        #     sort = f"'d.{args.get('sort')}'" if args.get('sort') else "'d.id'"
-        #     sort_dir = f"'{args.get('sort_dir')}'" if args.get('sort_dir') else "'asc'"
-        #     sqlQuery = f"EXEC DAFTBANK_PAGE @page={page},"\
-        #                f"@length={length},@sort={sort}," \
-        #                f"@sort_dir={sort_dir},"\
-        #                f"@search='{args['search'] or ''}'"
-        #     select_query = db.engine.execute(sqlQuery)
-        #     results = [dict(row) for row in select_query]
-        #     resultStr = json.dumps(results, cls=DateTimeEncoder)
-        #     result = json.loads(resultStr)
-        #
-        #     if len(result) > 0:
-        #         defaultPageResp['total'] = result[0]['total']
-        #         defaultPageResp['pages'] = math.floor((result[0]['total'] or 0) / (args['length'] or 1))
-        #         for row in result:
-        #             resultFinal.append({
-        #                 'id': row['id'],
-        #                 'KDPER': row['KDPER'] if row['KDPER'] else None,
-        #                 'NMPER': row['NMPER'].rstrip() if row['NMPER'] else None,
-        #                 'MTGLEVEL': row['MTGLEVEL'] if row['MTGLEVEL'] else None,
-        #                 'KDKHUSUS': row['KDKHUSUS'] if row['KDKHUSUS'] else None,
-        #                 'JNSREK': row['JNSREK'] if row['JNSREK'] else None,
-        #                 'IDJNSAKUN': row['IDJNSAKUN'] if row['IDJNSAKUN'] else None,
-        #                 'TYPE': row['TYPE'].rstrip() if row['TYPE'] else None,
-        #                 'STAKTIF': row['STAKTIF'] if row['STAKTIF'] else None,
-        #                 'DATECREATE': row['DATECREATE'] if row['DATECREATE'] else None,
-        #                 'URAIAN': row['URAIAN'].rstrip() if row['URAIAN'] else None,
-        #             })
-        #         return defaultPageResp, 200
-        # except Exception as e:
-        #     defaultPageResp = {
-        #         "message": f'Dapatkan data {modelName} gagal!',
-        #         "status": False
-        #     }
-        #     logger.error(e)
-        #     return defaultPageResp, 500
+
 
     #### POST SINGLE/MULTIPLE
     @doc.postRespDoc

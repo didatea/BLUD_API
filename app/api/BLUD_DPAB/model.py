@@ -15,15 +15,12 @@ class DPAB(db.Model):
     __tablename__ = 'DPAB'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     IDUNIT = db.Column(db.BigInteger, db.ForeignKey("DAFTUNIT.id"), nullable=False)
+    IDDPA = db.Column(db.BigInteger, db.ForeignKey("DPA.id"), nullable=False)
     IDREK = db.Column(db.BigInteger, db.ForeignKey("DAFTREKENING.id"), nullable=False)
     KDTAHAP = db.Column(db.String(5), db.ForeignKey("TAHAP.KDTAHAP"), nullable=False)
     NILAI = db.Column(mssql.MONEY, nullable=True)
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
-
-    @property
-    def UNIT(self):
-        return self.DAFTUNIT.NMUNIT if self.DAFTUNIT else ""
 
     @property
     def REKENING(self):

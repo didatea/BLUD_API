@@ -47,6 +47,9 @@ class KEGUNIT(db.Model):
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
     RKAR = db.relationship('RKAR', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    RKARDET = db.relationship('RKARDET', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPAR = db.relationship('DPAR', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPADETR = db.relationship('DPADETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
 
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT

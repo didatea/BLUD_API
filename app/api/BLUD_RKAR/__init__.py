@@ -16,6 +16,7 @@ respAndPayloadFields = {
     "DATECREATE": fields.DateTime(required=False, example="2024-03-26 10:21", ),
     "DATEUPDATE": fields.DateTime(required=False, example="2024-03-26 10:21", ),
     "UNIT": NullableString(readonly=True, example="", ),
+    "KDREKENING": NullableString(readonly=True, example="", ),
     "REKENING": NullableString(readonly=True, example="", ),
     "TAHAPAN": NullableString(readonly=True, example="", ),
     "KEGIATAN": NullableString(readonly=True, example="", ),
@@ -23,7 +24,7 @@ respAndPayloadFields = {
 uniqueField = []
 searchField = []
 sortField = []
-filterField = []
+filterField = ["IDUNIT", "IDKEG"]
 enabledPagination = False
 fileFields = []
 

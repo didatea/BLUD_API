@@ -19,9 +19,19 @@ class TAHAP(db.Model):
     TGLTRANSFER = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
     RKAB = db.relationship('RKAB', backref=db.backref(f'{modelName}'), lazy = "dynamic")
+    RKABDET = db.relationship('RKABDET', backref=db.backref(f'{modelName}'), lazy = "dynamic")
     RKAD = db.relationship('RKAD', backref=db.backref(f'{modelName}'), lazy = "dynamic")
+    RKADDET = db.relationship('RKADDET', backref=db.backref(f'{modelName}'), lazy = "dynamic")
     RKAR = db.relationship('RKAR', backref=db.backref(f'{modelName}'), lazy = "dynamic")
+    RKARDET = db.relationship('RKARDET', backref=db.backref(f'{modelName}'), lazy = "dynamic")
+    DPA = db.relationship('DPA', backref=db.backref(f'{modelName}'), lazy = "dynamic")
     USERTAHAP = db.relationship('USERTAHAP', backref=db.backref(f'{modelName}'), lazy = "dynamic")
+    DPAD = db.relationship('DPAD', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPADETD = db.relationship('DPADETD', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPAB = db.relationship('DPAB', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPADETB = db.relationship('DPADETB', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPAR = db.relationship('DPAR', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    DPADETR = db.relationship('DPADETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
 
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT
