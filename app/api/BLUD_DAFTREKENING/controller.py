@@ -120,6 +120,24 @@ class List(Resource):
             resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
             resp['data'] = a
             return resp, 200
+        if args["rekening"] == "UP":
+            sqlQuery = text(f'''
+                SELECT        id, KDPER, NMPER, MTGLEVEL, KDKHUSUS, JNSREK, IDJNSAKUN, TYPE, STAKTIF, parent_id, DATECREATE
+                FROM            DAFTREKENING
+                WHERE        (KDPER = 'REK_UP')''')
+            data = db.engine.execute(sqlQuery)
+            d, a = {}, []
+            for rowproxy in data:
+                for column, value in rowproxy.items():
+                    if isinstance(value, datetime):
+                        d = {**d, **{column: value.isoformat()}}
+                    else:
+                        d = {**d, **{column: value}}
+                a.append(d)
+            # print(a)
+            resp = message(True, generateDefaultResponse(crudTitle, 'get-list', 200))
+            resp['data'] = a
+            return resp, 200
 
         if args.get("parent_id") == 'null':
             args["MTGLEVEL"] = 1

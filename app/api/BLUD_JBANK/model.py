@@ -20,6 +20,8 @@ class JBANK(db.Model):
     AKRONIM = db.Column(db.String(200), nullable=True)
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
+    DAFTPHK3 = db.relationship('DAFTPHK3', backref=db.backref(f'{modelName}'), lazy="dynamic")
+
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT
 @event.listens_for(db.session, "do_orm_execute")
 def check_unit_privilege_read(orm_execute_state):

@@ -51,7 +51,7 @@ class List(Resource):
             id_prgrm = args.get("IDPRGRM")  # Ambil parameter IDPRGRM dari request
 
             sqlQuery = text("""
-                    EXEC [dbo].[get_kegUnit] :id_unit, :id_prgrm;
+                    EXEC get_kegUnit :id_unit, :id_prgrm;
                 """)
 
             try:

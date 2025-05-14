@@ -40,6 +40,10 @@ class DAFTREKENING(db.Model):
     DPAR = db.relationship('DPAR', backref=db.backref(f'{modelName}'), lazy="dynamic")
     DPADETR = db.relationship('DPADETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
     TBPDETD = db.relationship('TBPDETD', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    BERITADETR = db.relationship('BERITADETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    SPPDETB = db.relationship('SPPDETB', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    # SPPDETD = db.relationship('SPPDETD', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    # SPPDETR = db.relationship('SPPDETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
     # @property
     # def NMREK(self):
