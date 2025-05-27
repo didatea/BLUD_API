@@ -46,6 +46,7 @@ class List(Resource):
     @token_required
     def get(self):
         args = parser.parse_args()
+
         if args["kegUnit"] == "1":
             id_unit = args.get("IDUNIT")  # Ambil parameter IDUNIT dari request
             id_prgrm = args.get("IDPRGRM")  # Ambil parameter IDPRGRM dari request

@@ -24,6 +24,7 @@ class PAJAK(db.Model):
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
+    SPPDETP = db.relationship('SPPDETP', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
     @property
     def NMJNSPAJAK(self):

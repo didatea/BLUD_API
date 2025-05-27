@@ -22,7 +22,7 @@ respAndPayloadFields = {
 uniqueField = []
 searchField = ["NOBERITA"]
 sortField = []
-filterField = ["NOBERITA"]
+filterField = ["NOBERITA", "IDKEG", "IDUNIT"]
 enabledPagination = True
 fileFields = []
 

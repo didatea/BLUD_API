@@ -21,6 +21,7 @@ class STATTRS(db.Model):
     TBP = db.relationship('TBP', backref=db.backref(f'{modelName}'), lazy="dynamic")
     STS = db.relationship('STS', backref=db.backref(f'{modelName}'), lazy="dynamic")
     BERITA = db.relationship('BERITA', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    BPK = db.relationship('BPK', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT
 @event.listens_for(db.session, "do_orm_execute")

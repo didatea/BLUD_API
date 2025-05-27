@@ -3,6 +3,7 @@ from threading import Thread
 
 from sqlalchemy import event
 from sqlalchemy.dialects import mssql
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app import db
 from app.sso_helper import check_unit_privilege_on_changes_db, insert_user_activity, current_user, \
@@ -14,17 +15,36 @@ from . import crudTitle, apiPath, modelName
 class SPPDETR(db.Model):
     __tablename__ = 'SPPDETR'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    IDREK = db.Column(db.BigInteger, nullable=False)
-    IDKEG = db.Column(db.BigInteger, nullable=False)
+    IDREK = db.Column(db.BigInteger, db.ForeignKey("DAFTREKENING.id"), nullable=False)
+    IDKEG = db.Column(db.BigInteger, db.ForeignKey("KEGUNIT.id"), nullable=False)
     IDSPP = db.Column(db.BigInteger, nullable=False)
-    IDNOJETRA = db.Column(db.Integer, nullable=False)
+    IDNOJETRA = db.Column(db.Integer, default=21, nullable=False)
     NILAI = db.Column(mssql.MONEY, nullable=True)
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
+    kegunit_rel = db.relationship(
+        'KEGUNIT',
+        primaryjoin='SPPDETR.IDKEG == KEGUNIT.id',
+        backref='sppdetr_items',
+        lazy='joined'  # Auto join saat query
+    )
     @property
     def KDPER(self):
         return self.DAFTREKENING.KDPER if self.DAFTREKENING else ""
+
+    @property
+    def NMKEGUNIT(self):
+        # Debugging langsung
+        if not self.kegunit_rel:
+            print(f"Debug: No KEGUNIT found for SPPDETR ID {self.id} with IDKEG {self.IDKEG}")
+            return ""
+
+        if not hasattr(self.kegunit_rel, 'mkegiatan'):
+            print(f"Debug: KEGUNIT {self.kegunit_rel.id} has no mkegiatan relation")
+            return ""
+
+        return self.kegunit_rel.mkegiatan.NMKEGUNIT or ""
 
     @property
     def NMPER(self):

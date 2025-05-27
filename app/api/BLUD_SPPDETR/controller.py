@@ -62,9 +62,18 @@ class List(Resource):
 
     #### POST SINGLE/MULTIPLE
     @doc.postRespDoc
-    @api.expect(doc.default_data_response, validate=True)
+    # @api.expect(doc.default_data_response, validate=True)
     @token_required
     def post(self):
+        request_post = request.get_json()
+        # request_post['IDNOJETRA'] = 21
+        # Modifikasi request object
+        if isinstance(request_post, list):
+            for item in request_post:
+                if 'IDUNIT' in item:
+                    del item['IDUNIT']
+        elif 'IDUNIT' in request_post:
+            del request_post['IDUNIT']
         return GeneralPost(doc, crudTitle, Service, request)
 
     #### MULTIPLE-DELETE

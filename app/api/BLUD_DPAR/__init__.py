@@ -24,7 +24,7 @@ respAndPayloadFields = {
 uniqueField = []
 searchField = []
 sortField = []
-filterField = ["IDUNIT", "IDKEG"]
+filterField = ["IDUNIT", "IDKEG", "KDTAHAP"]
 enabledPagination = False
 fileFields = []
 

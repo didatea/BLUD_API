@@ -32,6 +32,7 @@ class DAFTPHK3(db.Model):
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
     KONTRAK = db.relationship('KONTRAK', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    BPK = db.relationship('BPK', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
     @property
     def NMBANK(self):

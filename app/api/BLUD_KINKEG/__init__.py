@@ -22,7 +22,7 @@ respAndPayloadFields = {
 uniqueField = []
 searchField = ["KDPER", "NMPER"]
 sortField = []
-filterField = ["parent_id", "MTGLEVEL", "TYPE", "kinkeg"]
+filterField = ["parent_id", "MTGLEVEL", "TYPE", "kinkeg", "IDKEG"]
 enabledPagination = False
 fileFields = []
 

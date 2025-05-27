@@ -15,11 +15,12 @@ respAnSPPDETRyloadFields = {
     "NILAI": fields.Fixed(required=False, ),
     "KDPER": NullableString(readonly=True, example="", ),
     "NMPER": NullableString(readonly=True, example="", ),
+    "NMKEGUNIT": NullableString(readonly=True, example="", ),
 }
 uniqueField = []
 searchField = []
 sortField = [""]
-filterField = [ "IDBERITA", "IDREK", "IDKEG"]
+filterField = [ "IDBERITA", "IDREK", "IDKEG", "IDSPP"]
 enableSPPDETRgination = False
 fileFields = []
 

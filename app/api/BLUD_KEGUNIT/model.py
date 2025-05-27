@@ -17,7 +17,7 @@ class KEGUNIT(db.Model):
     __tablename__ = 'KEGUNIT'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     IDUNIT = db.Column(db.BigInteger, nullable=False)
-    IDKEG = db.Column(db.BigInteger, nullable=False)
+    IDKEG = db.Column(db.BigInteger, db.ForeignKey('MKEGIATAN.id'), nullable=False)
     KDTAHAP = db.Column(db.String(5), nullable=False)
     IDPRGRM = db.Column(db.BigInteger, nullable=False)
     NOPRIOR = db.Column(db.Integer, nullable=True)
@@ -50,7 +50,16 @@ class KEGUNIT(db.Model):
     RKARDET = db.relationship('RKARDET', backref=db.backref(f'{modelName}'), lazy="dynamic")
     DPAR = db.relationship('DPAR', backref=db.backref(f'{modelName}'), lazy="dynamic")
     DPADETR = db.relationship('DPADETR', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    mkegiatan = db.relationship('MKEGIATAN', backref='kegunits', lazy="joined")
+    # sppdetrs = db.relationship('SPPDETR', back_populates='kegunit', foreign_keys='[SPPDETR.IDKEG]')
 
+    @property
+    def NUKEG(self):
+        return self.mkegiatan.NUKEG if self.mkegiatan else None
+
+    @property
+    def NMKEGUNIT(self):
+        return self.mkegiatan.NMKEGUNIT if self.mkegiatan else None
 
 # BEFORE TRANSACTION: CHECK PRIVILEGE UNIT
 @event.listens_for(db.session, "do_orm_execute")

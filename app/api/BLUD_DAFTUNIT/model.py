@@ -44,6 +44,7 @@ class DAFTUNIT(db.Model):
     TBP = db.relationship('TBP', backref=db.backref(f'{modelName}'), lazy="dynamic")
     TBPDETD = db.relationship('TBPDETD', backref=db.backref(f'{modelName}'), lazy="dynamic")
     STS = db.relationship('STS', backref=db.backref(f'{modelName}'), lazy="dynamic")
+    BPK = db.relationship('BPK', backref=db.backref(f'{modelName}'), lazy="dynamic")
 
     @property
     def has_child(self):

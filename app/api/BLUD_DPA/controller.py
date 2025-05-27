@@ -161,7 +161,7 @@ class List(Resource):
                     KDTAHAP=str(data["KDTAHAP"]) if isinstance(data, dict) else str(data.KDTAHAP),
                     IDKEG=str(data["IDREK"]) if isinstance(data, dict) else str(data.IDKEG),
                     IDREK=str(data["IDREK"]) if isinstance(data, dict) else str(data.IDREK),
-                    NILAI=float(data["NILAI"]) if isinstance(data, dict) else float(data.NILAI),
+                    NILAI=float(data["NILAI"] or 0) if isinstance(data, dict) else float(data.NILAI or 0),
                     DATECREATE=data["DATECREATE"] if isinstance(data, dict) else data.DATECREATE,
                     DATEUPDATE=data["DATEUPDATE"] if isinstance(data, dict) else data.DATEUPDATE
                 )
@@ -212,7 +212,7 @@ class List(Resource):
                     IDDPA=IDDPA,
                     KDTAHAP=str(data["KDTAHAP"]) if isinstance(data, dict) else str(data.KDTAHAP),
                     IDREK=str(data["IDREK"]) if isinstance(data, dict) else str(data.IDREK),
-                    NILAI=float(data["NILAI"]) if isinstance(data, dict) else float(data.NILAI),
+                    NILAI=float(data["NILAI"] or 0) if isinstance(data, dict) else float(data.NILAI or 0),
                     DATECREATE=data["DATECREATE"] if isinstance(data, dict) else data.DATECREATE,
                     DATEUPDATE=data["DATEUPDATE"] if isinstance(data, dict) else data.DATEUPDATE
                 )

@@ -51,6 +51,12 @@ class List(Resource):
     @api.expect(parser)
     @token_required
     def get(self):
+        user = current_user['username']
+        print(user)
+        KDTAHAP = USERTAHAP.query.with_entities(USERTAHAP.KDTAHAP).filter_by(USERID=user).first()
+        print(KDTAHAP[0])
+        # Tambahkan filter KDTAHAP ke parser atau langsung ke query
+        parser.add_argument('KDTAHAP', type=str, default=KDTAHAP[0], help='Filter by KDTAHAP')
         return GeneralGetList(doc, crudTitle, enabledPagination, respAndPayloadFields, Service, parser)
 
     #### POST SINGLE/MULTIPLE

@@ -18,7 +18,7 @@ class RKARDET(db.Model):
     IDKEG = db.Column(db.BigInteger, db.ForeignKey("KEGUNIT.id"), nullable=False)
     KDTAHAP = db.Column(db.String(5), db.ForeignKey("TAHAP.KDTAHAP"), nullable=False)
     IDREK = db.Column(db.BigInteger, db.ForeignKey("DAFTREKENING.id"), nullable=False)
-    IDRKAR = db.Column(db.BigInteger, nullable=False)
+    IDRKAR = db.Column(db.BigInteger, db.ForeignKey("RKAR.id"), nullable=False)
     KDJABAR = db.Column(db.String(5), nullable=False)
     URAIAN = db.Column(db.String(512), nullable=False)
     JUMBYEK = db.Column(mssql.MONEY, nullable=True)

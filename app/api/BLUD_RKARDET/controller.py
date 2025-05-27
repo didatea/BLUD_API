@@ -19,6 +19,7 @@ from . import crudTitle, enabledPagination, respAndPayloadFields, fileFields, mo
 from .doc import doc
 from .model import RKARDET
 from .service import Service
+from ..BLUD_RKAR.model import RKAR
 from ..BLUD_USERTAHAP.model import USERTAHAP
 from ... import internalApi_byUrl, db
 from ...sso_helper import token_required, current_user
@@ -60,13 +61,40 @@ class List(Resource):
     @api.expect(doc.default_data_response, validate=False)
     @token_required
     def post(self):
-        request_post = request.get_json()
-        user = current_user['username']
-        KDTAHAP = USERTAHAP.query.with_entities(USERTAHAP.KDTAHAP).filter_by(USERID=user).first()
-        request_post['KDTAHAP'] = KDTAHAP[0]
-        request_post['JUMBYEK'] = request_post['EKSPRESI']
-        request_post['SUBTOTAL'] = request_post['JUMBYEK'] * request_post['TARIF']
-        return GeneralPost(doc, crudTitle, Service, request)
+        try:
+            request_post = request.get_json()
+            user = current_user['username']
+
+            # Ambil KDTAHAP berdasarkan user
+            KDTAHAP = USERTAHAP.query.with_entities(USERTAHAP.KDTAHAP).filter_by(USERID=user).first()
+            request_post['KDTAHAP'] = KDTAHAP[0]
+
+            # Hitung SUBTOTAL
+            request_post['JUMBYEK'] = request_post['EKSPRESI']
+            request_post['SUBTOTAL'] = request_post['JUMBYEK'] * request_post['TARIF']
+
+            # Insert ke RKARDET via GeneralPost
+            rka_response = GeneralPost(doc, crudTitle, Service, request)
+
+            # Tambahkan SUBTOTAL ke RKAR.NILAI
+            id_rkar = request_post.get("IDRKAR")
+            subtotal = request_post['SUBTOTAL']
+
+            rkar_row = RKAR.query.get(id_rkar)
+            if rkar_row:
+                current_nilai = rkar_row.NILAI or 0
+                rkar_row.NILAI = current_nilai + subtotal
+                rkar_row.DATEUPDATE = datetime.now()
+                db.session.commit()
+            else:
+                return {"message": f"RKAR dengan id={id_rkar} tidak ditemukan"}, 404
+
+            return rka_response
+
+        except Exception as e:
+            db.session.rollback()
+            print("Error:", str(e))
+            return {"message": f"Internal Server Error: {str(e)}"}, 500
 
     #### MULTIPLE-DELETE
     @doc.deleteMultiRespDoc

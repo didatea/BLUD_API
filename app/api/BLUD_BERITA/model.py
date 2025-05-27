@@ -27,6 +27,8 @@ class BERITA(db.Model):
     DATECREATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
     DATEUPDATE = db.Column(db.DateTime, default=datetime.now, nullable=True)
 
+    SPPBA = db.relationship('SPPBA', backref=db.backref(f'{modelName}'), lazy="dynamic")
+
     @property
     def NOKONTRAK(self):
         return f" {self.KONTRAK.NOKONTRAK}" if self.KONTRAK else None
